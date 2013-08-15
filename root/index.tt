@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Spell Check</title>
+<style type="text/css">
+.error {
+    color: red;
+}
+</style>
+<script src="/static/js/jquery-2.0.3.min.js"></script>
+<script type="text/javascript">
+$().ready(function() {
+    $("#checkword").submit(function() {
+        $.getJSON('/spellcheck/check', { word: $("#spell").val() }, function(data) {
+            var items = [];
+    
+            var results;
+            if ( data.correct == 1 ) {       
+                results = $("#spell").val() + ' is correct';
+            }
+            else if ( data.suggestions.length > 0 ) {
+                var suggestions = [];
+                $.each(data.suggestions, function(key,val) {
+                    suggestions.push('<li>' + val + '</li>');
+                });
+                
+                results = $("#spell").val() + ' is incorrect. Suggestions: <ul>' + suggestions.join('') + '</ul>'; 
+            }
+            else if ( data.errorstring ) {
+                results = "Error: " + data.errorstring;
+            }
+            else { results = "Error: unknown"; }
+        
+            $("#results").html(results);
+        });
+
+    return false;
+    });
+});
+</script>
+</head>
+<body>
+
+<form id="checkword" action="tester.html">
+Spell Check Word: <input type="text" id="spell"><br>
+<input type="submit" value="Check Word">
+</form>
+Spelling Results: <div id="results"></div>
+</body>
+</html>

@@ -1,0 +1,5 @@
+Run the Makefile.PL to check for properly installed Catalyst Runtime modules
+
+Note: requires installation of GNU aspell and aspell en_US dictionary
+
+Run script/jsonspell_server.pl to test the application using http://localhost:3000
